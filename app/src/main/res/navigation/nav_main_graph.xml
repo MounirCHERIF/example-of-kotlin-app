@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_main_graph"
+    app:startDestination="@id/parksCardFragment">
+
+    <fragment
+        android:id="@+id/parkingsList_Fragment"
+        android:name="com.example.parkingapp.ParkingsList_Fragment"
+        android:label="Liste des parkings"
+        tools:layout="@layout/fragment_parkings_list">
+        <action
+            android:id="@+id/action_parkingsList_Fragment_to_parkingFragment_Info"
+            app:destination="@id/parkingFragment_Info" />
+    </fragment>
+    <fragment
+        android:id="@+id/parkingFragment_Info"
+        android:name="com.example.parkingapp.ParkingFragment_Info"
+        android:label="Détail de parking"
+        tools:layout="@layout/fragment_parking_info">
+        <argument
+            android:name="nom_parking"
+            app:argType="string" />
+        <argument
+            android:name="commune"
+            app:argType="string" />
+        <argument
+            android:name="image_parking"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/parksCardFragment"
+        android:name="com.example.parkingapp.ParksCardFragment"
+        android:label="Carte des parkings"
+        tools:layout="@layout/fragment_card" />
+    <fragment
+        android:id="@+id/compteFragment"
+        android:name="com.example.parkingapp.CompteFragment"
+        android:label="Mon compte"
+        tools:layout="@layout/fragment_compte" />
+    <fragment
+        android:id="@+id/reservationsFragment"
+        android:name="com.example.parkingapp.ReservationsFragment"
+        android:label="Mes réservations"
+        tools:layout="@layout/fragment_reservation" />
+    <fragment
+        android:id="@+id/deconnexionFragment"
+        android:name="com.example.parkingapp.DeconnexionFragment"
+        tools:layout="@layout/fragment_deconnexion" />
+</navigation>

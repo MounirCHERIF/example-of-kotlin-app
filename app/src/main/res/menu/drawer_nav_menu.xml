@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/reservationsFragment"
+        android:icon="@drawable/ic_launcher_foreground"
+        android:title="Mes résevations"/>
+    <item
+        android:id="@+id/compteFragment"
+        android:icon="@drawable/ic_launcher_foreground"
+        android:title="Mon compte"/>
+    <item
+        android:id="@+id/deconnexionFragment"
+        android:icon="@drawable/ic_launcher_foreground"
+        android:title="Déconnexion"/>
+</menu>

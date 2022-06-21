@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ParkingFragment_Info">
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/nom"
+        android:layout_width="wrap_content"
+        android:layout_height="23dp"
+        android:layout_marginStart="16dp"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/image"
+        android:layout_marginTop="10dp"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+    <TextView
+        android:id="@+id/commune"
+        android:layout_width="wrap_content"
+        android:layout_height="23dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nom" />
+    <TextView
+        android:id="@+id/etat"
+        android:layout_width="wrap_content"
+        android:layout_height="23dp"
+        android:layout_marginStart="16dp"
+        android:textColor="#D10F22"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/commune" />
+
+    <TextView
+        android:id="@+id/taux"
+        android:layout_width="wrap_content"
+        android:layout_height="23dp"
+        android:layout_marginStart="3dp"
+        app:layout_constraintLeft_toRightOf="@+id/etat"
+        app:layout_constraintTop_toTopOf="@id/etat" />
+    <TextView
+        android:id="@+id/temps"
+        android:layout_width="wrap_content"
+        android:layout_height="23dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/etat"
+        android:layout_marginRight="16dp"/>
+    <TextView
+        android:id="@+id/distance"
+        android:layout_width="wrap_content"
+        android:layout_height="23dp"
+        android:textColor="#187bcd"
+        android:layout_marginStart="3dp"
+        app:layout_constraintRight_toLeftOf="@+id/temps"
+        app:layout_constraintTop_toTopOf="@id/etat" />
+    <ImageView
+        android:id="@+id/voiture"
+        android:layout_width="19dp"
+        android:layout_height="19dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:layout_marginRight="6dp"
+        app:layout_constraintRight_toLeftOf="@+id/distance"
+        app:layout_constraintTop_toTopOf="@+id/etat" />
+    <com.google.android.material.button.MaterialButton
+        app:icon="@android:drawable/ic_menu_directions"
+        app:iconSize="24dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:id="@+id/mapButton"
+        app:layout_constraintTop_toBottomOf="@+id/image"
+        app:layout_constraintBottom_toBottomOf="@+id/image"
+        app:layout_constraintEnd_toEndOf="@+id/image"
+        android:layout_marginEnd="16dp"
+        android:theme="@style/Theme.MaterialComponents.Light"
+        style="@style/Widget.MaterialComponents.Button.Icon"
+        app:iconPadding="0dp"
+        android:insetLeft="0dp"
+        android:insetTop="0dp"
+        android:insetRight="0dp"
+        android:insetBottom="0dp"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Rounded"
+        app:backgroundTint="#F44C4C"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
