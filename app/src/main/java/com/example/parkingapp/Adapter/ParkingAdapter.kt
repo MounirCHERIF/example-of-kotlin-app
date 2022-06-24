@@ -10,6 +10,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.core.os.bundleOf
+import androidx.core.os.persistableBundleOf
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -19,6 +21,7 @@ import androidx.navigation.fragment.findNavController
 class ParkingAdapter(val context: Context?, var data: List<Parking>) :
     RecyclerView.Adapter<ParkingAdapter.MyViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+
         return MyViewHolder(
             LayoutInflater.from(context).inflate(R.layout.parking_layout, parent, false)
         )
@@ -36,22 +39,31 @@ class ParkingAdapter(val context: Context?, var data: List<Parking>) :
     private fun bind(holder: MyViewHolder, parking: Parking) {
 
         holder.apply {
-            nom.text = parking.nom
+            nom.text = parking.nomParking
             commune.text = parking.commune
-            taux.text = "- " + "65%"
             distance.text = "18 km"
-            temps.text = "- " + "16 min"
-            //if (parking.etat == true) {etat.text = "Ouvert"}else{etat.text = "Fermé"}
+            temps.text = " - " + "16 min"
+            etat.text = parking.etat
+            var temp = 100
+            if (parking.HistoriqueParking.size != 0){
+                 temp = 100 * parking.HistoriqueParking[0].nombrePlace/parking.nombrePlaceMax
+            }
+            taux.text = "- " +temp.toString() + "%"
             if (context != null) {
-                Glide.with(context).load(parking.parking_image).into(image)
+                Glide.with(context).load(parking.photo).into(image)
                 Glide.with(context).load(R.drawable.car).into(voiture)
             }
             itemView.setOnClickListener { view ->
-                val image = parking.parking_image
+                val image = parking.photo
                 val nom = view.findViewById<TextView>(R.id.nom).text.toString()
                 val commune = view.findViewById<TextView>(R.id.commune).text.toString()
+                val tarif_heure = parking.tarifHeure
+                val idParking = parking.idParking
+                val taux = view.findViewById<TextView>(R.id.taux).text.toString()
+                val etat = parking.etat
                 val action =
-                    ParkingsList_FragmentDirections.actionParkingsListFragmentToParkingFragmentInfo(nom,commune,image)
+                    ParkingsList_FragmentDirections.actionParkingsListFragmentToParkingFragmentInfo(nom,commune,image,tarif_heure.toString(),idParking,etat.toString(),taux)
+
                 view.findNavController().navigate(action)
             }
 

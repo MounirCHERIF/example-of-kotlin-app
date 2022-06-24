@@ -5,90 +5,206 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ParkingFragment_Info">
+
     <ImageView
         android:id="@+id/image"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="0dp"
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/nom"/>
+
     <TextView
         android:id="@+id/nom"
         android:layout_width="wrap_content"
         android:layout_height="23dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp"
         android:textSize="17sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@+id/image"
-        android:layout_marginTop="10dp"
-        app:layout_constraintLeft_toLeftOf="parent"/>
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/commune" />
+
     <TextView
         android:id="@+id/commune"
         android:layout_width="wrap_content"
         android:layout_height="23dp"
         android:layout_marginStart="16dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nom" />
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/etat_detail" />
+
     <TextView
-        android:id="@+id/etat"
+        android:id="@+id/etat_detail"
         android:layout_width="wrap_content"
         android:layout_height="23dp"
         android:layout_marginStart="16dp"
         android:textColor="#D10F22"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/commune" />
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout_detail"/>
 
     <TextView
         android:id="@+id/taux"
         android:layout_width="wrap_content"
         android:layout_height="23dp"
         android:layout_marginStart="3dp"
-        app:layout_constraintLeft_toRightOf="@+id/etat"
-        app:layout_constraintTop_toTopOf="@id/etat" />
+        app:layout_constraintLeft_toRightOf="@+id/etat_detail"
+        app:layout_constraintTop_toTopOf="@id/etat_detail" />
+
     <TextView
         android:id="@+id/temps"
         android:layout_width="wrap_content"
         android:layout_height="23dp"
+        android:layout_marginRight="16dp"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@id/etat"
-        android:layout_marginRight="16dp"/>
+        app:layout_constraintTop_toTopOf="@id/etat_detail" />
+
     <TextView
         android:id="@+id/distance"
         android:layout_width="wrap_content"
         android:layout_height="23dp"
-        android:textColor="#187bcd"
         android:layout_marginStart="3dp"
+        android:textColor="#187bcd"
         app:layout_constraintRight_toLeftOf="@+id/temps"
-        app:layout_constraintTop_toTopOf="@id/etat" />
+        app:layout_constraintTop_toTopOf="@id/etat_detail" />
+
     <ImageView
         android:id="@+id/voiture"
         android:layout_width="19dp"
         android:layout_height="19dp"
+        android:layout_marginRight="6dp"
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
-        android:layout_marginRight="6dp"
         app:layout_constraintRight_toLeftOf="@+id/distance"
-        app:layout_constraintTop_toTopOf="@+id/etat" />
+        app:layout_constraintTop_toTopOf="@+id/etat_detail" />
+
     <com.google.android.material.button.MaterialButton
-        app:icon="@android:drawable/ic_menu_directions"
-        app:iconSize="24dp"
+        android:id="@+id/mapButton"
+        style="@style/Widget.MaterialComponents.Button.Icon"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:id="@+id/mapButton"
-        app:layout_constraintTop_toBottomOf="@+id/image"
-        app:layout_constraintBottom_toBottomOf="@+id/image"
-        app:layout_constraintEnd_toEndOf="@+id/image"
         android:layout_marginEnd="16dp"
-        android:theme="@style/Theme.MaterialComponents.Light"
-        style="@style/Widget.MaterialComponents.Button.Icon"
-        app:iconPadding="0dp"
         android:insetLeft="0dp"
         android:insetTop="0dp"
         android:insetRight="0dp"
         android:insetBottom="0dp"
-        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Rounded"
-        app:backgroundTint="#F44C4C"/>
+        android:theme="@style/Theme.MaterialComponents.Light"
+        app:backgroundTint="#F44C4C"
+        app:icon="@android:drawable/ic_menu_directions"
+        app:iconPadding="0dp"
+        app:iconSize="24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/image"
+        app:layout_constraintEnd_toEndOf="@+id/image"
+        app:layout_constraintTop_toBottomOf="@+id/image"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Rounded" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout_detail"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/grey"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/etat_detail">
+
+        <TextView
+            android:id="@+id/tarif_horaire"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="13dp"
+            android:layout_marginBottom="5dp"
+            android:text="Horaires"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/recyclerView_Horaire"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView_Horaire"
+            android:layout_width="325dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="20dp"
+            android:background="#FFFFFF"
+            app:layout_constraintBottom_toTopOf="@id/tarif_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tarif_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp"
+            android:text="Tarifs"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/constraintLayout_tarif"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout_tarif"
+            android:layout_width="325dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="#FFFFFF"
+            app:layout_constraintBottom_toTopOf="@+id/paiement_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:id="@+id/heure_text"
+                android:layout_width="wrap_content"
+                android:layout_height="19dp"
+                android:layout_marginLeft="18dp"
+                android:elevation="8dp"
+                android:text="1 heure(s)"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tarif_heure"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:elevation="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginRight="18dp"
+                app:layout_constraintVertical_bias="0.512" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/paiement_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="5dp"
+            android:text="Paiement"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/reserver_button"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <Button
+            android:id="@+id/reserver_button"
+            android:layout_width="325dp"
+            android:layout_height="52dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:backgroundTint="#F44C4C"
+            android:text="RÉSERVER"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

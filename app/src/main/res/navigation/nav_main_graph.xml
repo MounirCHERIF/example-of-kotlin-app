@@ -28,6 +28,18 @@
         <argument
             android:name="image_parking"
             app:argType="string" />
+        <argument
+            android:name="tarif_heure"
+            app:argType="string" />
+        <argument
+            android:name="idParking"
+            app:argType="integer" />
+        <argument
+            android:name="etat"
+            app:argType="string" />
+        <argument
+            android:name="taux"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/parksCardFragment"

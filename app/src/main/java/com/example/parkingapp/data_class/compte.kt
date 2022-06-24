@@ -2,12 +2,12 @@ package com.example.parkingapp
 import java.io.Serializable
 
 data class compte(
-    val id:Int,
+    val idCompte:Int,
     val nom:String,
     val prenom:String,
-    val num_tlphn:String,
+    val numTelephone:String,
     val email:String,
-    val mot_de_passe:String,
-    val num_compte: String?,
-    val mdp_compte: String?
+    val motDePasse:String,
+    val numCompte: String?,
+    val motDePasseCompte: String?
 ):Serializable

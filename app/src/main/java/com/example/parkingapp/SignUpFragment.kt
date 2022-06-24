@@ -43,7 +43,7 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
                 ) {
                     Toast.makeText(
                         requireContext(),
-                        "You should fill all the fields",
+                        "Vous devez remplir tous les champs",
                         Toast.LENGTH_SHORT
                     ).show()
                 } else {
@@ -59,7 +59,7 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
         })
 
         var signUp_textView = view.findViewById(R.id.signUpTextView) as TextView
-        signUp_textView.setOnClickListener{
+        signUp_textView.setOnClickListener {
             val action = SignUpFragmentDirections.actionSignUpFragmentToSignInFragment()
             findNavController().navigate(action)
         }
@@ -73,7 +73,7 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
         mdp: String
     ) {
         loadingPB!!.visibility = View.VISIBLE
-        val modal = compte(0,nom, prenom, num_tlphn, email, mdp,null,null)
+        val modal = compte(0, nom, prenom, num_tlphn, email, mdp, null, null)
         val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
             requireActivity().runOnUiThread() {
                 loadingPB!!.visibility = View.INVISIBLE
@@ -87,20 +87,27 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
             withContext(Dispatchers.Main) {
                 loadingPB!!.visibility = View.INVISIBLE
                 if (response.isSuccessful && response.body() != null) {
-                    Toast.makeText(
-                        requireContext(),
-                        response.body().toString(),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    if(response.body().toString()=="account created!"){
-                        saveConnexion(requireContext(),true)
+                    if (response.body()== null) {
+                        Toast.makeText(
+                            requireContext(),
+                            "Email existe déjà",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        Toast.makeText(
+                            requireContext(),
+                            "Compte créé",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        saveConnexion(requireContext(), true)
                         val intent = Intent(requireContext(), MainActivity::class.java)
                         startActivity(intent)
                     }
+
                 } else {
                     Toast.makeText(
                         requireContext(),
-                        "Une erreur s'est produite",
+                        "Une erreur s'est produite ******",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
