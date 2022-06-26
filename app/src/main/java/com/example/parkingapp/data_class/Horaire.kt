@@ -1,5 +1,6 @@
 package com.example.parkingapp.data_class
 
+import java.io.Serializable
 import java.sql.Time
 
 data class Horaire(
@@ -7,4 +8,4 @@ data class Horaire(
     val horaireOuverture: String,
     val horaireFermeture: String,
     val jour: String
-)
+): Serializable

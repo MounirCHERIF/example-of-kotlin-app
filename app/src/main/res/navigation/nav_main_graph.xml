@@ -40,6 +40,15 @@
         <argument
             android:name="taux"
             app:argType="string" />
+        <argument
+            android:name="adresseParking"
+            app:argType="string" />
+        <argument
+            android:name="distance"
+            app:argType="string" />
+        <argument
+            android:name="temps"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/parksCardFragment"

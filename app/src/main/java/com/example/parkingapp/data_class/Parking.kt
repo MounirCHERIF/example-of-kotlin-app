@@ -1,6 +1,8 @@
 package com.example.parkingapp
 
 import com.example.parkingapp.data_class.HistoriqueParking
+import com.example.parkingapp.data_class.Horaire
+import com.example.parkingapp.data_class.Parking_Horaire
 import java.io.Serializable
 
 data class Parking(
@@ -8,10 +10,15 @@ data class Parking(
     val nomParking: String,
     val commune: String,
     val adresseParking: String,
+    val latitude: String,
+    val longitude: String,
     val nombrePlaceMax: Int,
     val tarifHeure: Int,
     val photo: String,
     val voiture_image: String,
     val HistoriqueParking:MutableList<HistoriqueParking>,
-    var etat : String?
+    val Horaire:MutableList<Horaire>,
+    var etat : String?,
+    var distance: String,
+    var temps: String
 ) : Serializable

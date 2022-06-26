@@ -17,10 +17,6 @@ interface Endpoint {
 
     @GET("parking")
     suspend fun getAllParkings(): Response<List<Parking>>
-    @GET("horaire/{idParking}")
-    suspend fun getParkingHoraires(@Path("idParking") idParking:Int): Response<List<Horaire>>
-    @GET("horaire/parkings/{jour}")
-    suspend fun getHorairesParkings(@Path("jour") jour:String): Response<List<Parking_Horaire>>
     @POST("compte")
     suspend fun createAccount(@Body newAccount: compte):Response<compte>
 

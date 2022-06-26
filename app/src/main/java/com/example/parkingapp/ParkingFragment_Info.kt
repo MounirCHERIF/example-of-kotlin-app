@@ -1,20 +1,31 @@
 package com.example.parkingapp
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
 import android.view.View
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.parkingapp.data_class.Horaire
 import com.example.parkingapp.retrofit.Endpoint
 import com.example.parkingapp.viewmodel.HoraireModel
 import com.example.parkingapp.viewmodel.ParkingModel
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.*
 
 class ParkingFragment_Info : Fragment(R.layout.fragment_parking_info) {
@@ -23,15 +34,20 @@ class ParkingFragment_Info : Fragment(R.layout.fragment_parking_info) {
     lateinit var recyclerView: RecyclerView
     lateinit var horaireModel: HoraireModel
 
+
+    @SuppressLint("ResourceType")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val vm= ViewModelProvider(requireActivity()).get(HoraireModel::class.java)
 
         recyclerView = view?.findViewById(R.id.recyclerView_Horaire) as RecyclerView
         val layoutManager = LinearLayoutManager(context)
         progressBar = ProgressBar(context)
         recyclerView.layoutManager = layoutManager
         horaireModel = HoraireModel()
-        loadData(view)
+        horaireModel.data = vm.data
+        //loadData(view)
         var adapter = HoraireAdapter(context, horaireModel.data)
         recyclerView.adapter = adapter
 
@@ -57,50 +73,19 @@ class ParkingFragment_Info : Fragment(R.layout.fragment_parking_info) {
             Glide.with(requireContext().applicationContext).load(R.drawable.car).into(voiture)
         }
         taux.text = args.taux
-        distance.text = "18 km"
-        temps.text = " - " + "16 min"
+        distance.text = args.distance
+        temps.text = args.temps
 
 
         // Set Maps button intent
         val mapsButton = view.findViewById(R.id.mapButton) as Button
         mapsButton.setOnClickListener {
             val gmmIntentUri =
-                Uri.parse("google.navigation:q=" + "30.002" + "," + "2.666" + "&mode=b")
+                Uri.parse("google.navigation:q=" + args.adresseParking+ "&mode=b")
             val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
             mapIntent.setPackage("com.google.android.apps.maps")
             startActivity(mapIntent)
         }
     }
 
-    fun loadData(view: View) {
-        val constraintLayout = view.findViewById<ConstraintLayout>(R.id.constraintLayout_detail)
-        progressBar.visibility = View.VISIBLE
-        constraintLayout.visibility = View.INVISIBLE
-
-        val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
-            requireActivity().runOnUiThread() {
-                progressBar.visibility = View.INVISIBLE
-                constraintLayout.visibility = View.VISIBLE
-                Toast.makeText(requireActivity(), throwable.message, Toast.LENGTH_SHORT).show()
-            }
-        }
-        progressBar.visibility = View.VISIBLE
-        constraintLayout.visibility = View.INVISIBLE
-        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            val response = Endpoint.createEndpoint().getParkingHoraires(args.idParking)
-            withContext(Dispatchers.Main) {
-                if (response.isSuccessful && response.body() != null) {
-                    constraintLayout.visibility = View.VISIBLE
-                    horaireModel.data = response.body()!!.toMutableList()
-                    recyclerView.adapter = HoraireAdapter(requireActivity(), horaireModel.data)
-                } else {
-                    Toast.makeText(
-                        requireActivity(),
-                        "Une erreur s'est produite",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-        }
-    }
 }

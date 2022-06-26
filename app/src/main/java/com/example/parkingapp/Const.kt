@@ -1,3 +1,3 @@
 package com.example.parkingapp
 
-const val url = "https://488e-129-45-28-140.eu.ngrok.io/"
+const val url = "https://c3be-41-220-149-163.eu.ngrok.io/"

@@ -1,5 +1,6 @@
 package com.example.parkingapp
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -12,13 +13,18 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
 import androidx.core.os.persistableBundleOf
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import androidx.navigation.fragment.findNavController
+import com.example.parkingapp.viewmodel.HoraireModel
+import com.example.parkingapp.viewmodel.ParkingModel
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
-class ParkingAdapter(val context: Context?, var data: List<Parking>) :
+class ParkingAdapter(val context: Context?, var data: List<Parking>,var vm:HoraireModel) :
     RecyclerView.Adapter<ParkingAdapter.MyViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
 
@@ -35,14 +41,15 @@ class ParkingAdapter(val context: Context?, var data: List<Parking>) :
         bind(holder, data[position])
     }
 
+    @SuppressLint("ResourceType")
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun bind(holder: MyViewHolder, parking: Parking) {
 
         holder.apply {
             nom.text = parking.nomParking
             commune.text = parking.commune
-            distance.text = "18 km"
-            temps.text = " - " + "16 min"
+            distance.text = parking.distance
+            temps.text = parking.temps
             etat.text = parking.etat
             var temp = 100
             if (parking.HistoriqueParking.size != 0){
@@ -59,12 +66,16 @@ class ParkingAdapter(val context: Context?, var data: List<Parking>) :
                 val commune = view.findViewById<TextView>(R.id.commune).text.toString()
                 val tarif_heure = parking.tarifHeure
                 val idParking = parking.idParking
+                val adresse = parking.adresseParking.toString()
                 val taux = view.findViewById<TextView>(R.id.taux).text.toString()
                 val etat = parking.etat
+                vm.data.addAll(parking.Horaire)
+
                 val action =
-                    ParkingsList_FragmentDirections.actionParkingsListFragmentToParkingFragmentInfo(nom,commune,image,tarif_heure.toString(),idParking,etat.toString(),taux)
+                    ParkingsList_FragmentDirections.actionParkingsListFragmentToParkingFragmentInfo(nom,commune,image,tarif_heure.toString(),idParking,etat.toString(),taux,adresse,parking.distance,parking.temps)
 
                 view.findNavController().navigate(action)
+
             }
 
         }

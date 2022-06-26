@@ -7,5 +7,4 @@ data class Parking_Horaire(
     val horaireOuverture: String,
     val horaireFermeture: String,
     val jour: String,
-    val Associer: MutableList<Associer>
 ) : Serializable
