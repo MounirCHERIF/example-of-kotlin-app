@@ -47,7 +47,10 @@ class ParkingFragment_Info : Fragment(R.layout.fragment_parking_info) {
         recyclerView.layoutManager = layoutManager
         horaireModel = HoraireModel()
         horaireModel.data = vm.data
-        //loadData(view)
+
+
+        tri_Days()
+
         var adapter = HoraireAdapter(context, horaireModel.data)
         recyclerView.adapter = adapter
 
@@ -85,6 +88,32 @@ class ParkingFragment_Info : Fragment(R.layout.fragment_parking_info) {
             val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
             mapIntent.setPackage("com.google.android.apps.maps")
             startActivity(mapIntent)
+        }
+    }
+
+    private fun tri_Days(){
+        var  list: MutableList<Int> = MutableList(horaireModel.data.size) { 0 }
+        for (horaire in horaireModel.data){
+            when (horaire.jour) {
+                "Samedi" -> list[horaireModel.data.indexOf(horaire)] = 0
+                "Dimanche"-> list[horaireModel.data.indexOf(horaire)] = 1
+                "Lundi"-> list[horaireModel.data.indexOf(horaire)] = 2
+                "Mardi"-> list[horaireModel.data.indexOf(horaire)] = 3
+                "Mercredi"-> list[horaireModel.data.indexOf(horaire)] = 4
+                "Jeudi"-> list[horaireModel.data.indexOf(horaire)] = 5
+                "Vendredi"-> list[horaireModel.data.indexOf(horaire)] = 6
+
+            }
+        }
+        var tmp_horaire : Horaire
+        for (i in 0..horaireModel.data.size-2){
+            for (j in 0..horaireModel.data.size-i-2){
+                if(list[j]>list[j+1]){
+                    tmp_horaire = horaireModel.data[j]
+                    horaireModel.data[j] = horaireModel.data[j+1]
+                    horaireModel.data[j+1] = tmp_horaire
+                }
+            }
         }
     }
 
