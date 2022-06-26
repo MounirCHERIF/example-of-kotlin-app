@@ -2,7 +2,6 @@ package com.example.parkingapp
 
 import com.example.parkingapp.data_class.HistoriqueParking
 import com.example.parkingapp.data_class.Horaire
-import com.example.parkingapp.data_class.Parking_Horaire
 import java.io.Serializable
 
 data class Parking(

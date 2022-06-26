@@ -3,15 +3,12 @@ package com.example.parkingapp.retrofit
 import com.example.parkingapp.Parking
 import com.example.parkingapp.url
 import com.example.parkingapp.compte
-import com.example.parkingapp.data_class.Horaire
-import com.example.parkingapp.data_class.Parking_Horaire
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
-import retrofit2.http.Path
 
 interface Endpoint {
 
