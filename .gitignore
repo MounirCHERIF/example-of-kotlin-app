@@ -22,3 +22,4 @@ gradle/
 gradle/*
 build.gradle
 gradle.properties
+settings.gradle
