@@ -19,6 +19,6 @@ gradlew.bat
 /gradlew.bat
 /gradle.properties
 gradle/
-gradle
+gradle/*
 build.gradle
 gradle.properties
