@@ -17,24 +17,21 @@ import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
-import androidx.databinding.DataBindingUtil.setContentView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
-import com.example.parkingapp.databinding.FragmentCardBinding
 import com.example.parkingapp.retrofit.Endpoint
 import com.example.parkingapp.viewmodel.ParkingModel
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.maps.android.SphericalUtil
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.callbackFlow
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -62,12 +59,6 @@ class ParksCardFragment : Fragment(R.layout.fragment_card), OnMapReadyCallback{
         loadingPB = view.findViewById(R.id.loadingPB_ParkingCard) as ProgressBar
         setHasOptionsMenu(true);
 
-
-        val btn = view.findViewById<View>(R.id.refresh) as Button
-
-        btn!!.setOnClickListener {
-                statusCheck()
-        }
 
 
         supportMapFragment.getMapAsync(this)
@@ -246,10 +237,21 @@ class ParksCardFragment : Fragment(R.layout.fragment_card), OnMapReadyCallback{
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
-        var item: MenuItem = menu.getItem(0)
+        var item: MenuItem = menu.getItem(1)
         if (item != null) item.isVisible = false
-        item = menu.getItem(1)
+        item = menu.getItem(0)
         if (item != null) item.isVisible = true
 
+
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.refresh_action -> {
+                statusCheck()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
