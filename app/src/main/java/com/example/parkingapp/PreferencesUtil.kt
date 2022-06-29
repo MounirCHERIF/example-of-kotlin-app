@@ -7,11 +7,17 @@ const val fileName = "sharedPrefs"
 
 
 
-fun saveConnexion(context: Context, connected:Boolean){
+fun saveConnexion(context: Context, connected:Boolean, nom:String?, prenom:String?,
+                    email:String?, numTel:String?, numCompte:String?){
     val sharedPreferences = context.getSharedPreferences(fileName, Context.MODE_PRIVATE)
     val editor = sharedPreferences.edit()
     editor.apply{
         putBoolean("Connected",connected)
+        putString("nom", nom)
+        putString("prenom", prenom)
+        putString("email", email)
+        putString("numTel", numTel)
+        putString("numCompte", numCompte)
     }.apply()
 }
 

@@ -99,7 +99,7 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
                             "Compte créé",
                             Toast.LENGTH_SHORT
                         ).show()
-                        saveConnexion(requireContext(), true)
+                        saveConnexion(requireContext(), true, modal.nom, modal.prenom, modal.email, modal.numTelephone, modal.numCompte)
                         val intent = Intent(requireContext(), MainActivity::class.java)
                         startActivity(intent)
                         requireActivity().finish()

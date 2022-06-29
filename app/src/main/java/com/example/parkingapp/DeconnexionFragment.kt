@@ -9,7 +9,7 @@ import com.example.menuapplication.saveConnexion
 class DeconnexionFragment : Fragment(R.layout.fragment_deconnexion) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        saveConnexion(requireContext(),false)
+        saveConnexion(requireContext(),false, "", "", "", "", "")
         val intent = Intent(requireContext(), SignActivity::class.java)
         startActivity(intent)
         requireActivity().finish()
