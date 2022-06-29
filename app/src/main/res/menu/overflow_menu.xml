@@ -11,8 +11,7 @@
     <item
         android:id="@+id/refresh_action"
         android:title="Rechercher"
-        android:menuCategory="secondary"
         android:icon="@drawable/ic_baseline_refresh_24"
         app:showAsAction="always|collapseActionView"
-        app:actionViewClass="androidx.appcompat.widget.SearchView" />
+         />
 </menu>

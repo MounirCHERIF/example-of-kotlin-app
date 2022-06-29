@@ -33,6 +33,10 @@ import com.example.parkingapp.viewmodel.ParkingModel
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.widget.Autocomplete
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.maps.android.SphericalUtil
 import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
@@ -58,6 +62,7 @@ class ParkingsList_Fragment : Fragment(R.layout.fragment_parkings_list) {
         loadingPB = view.findViewById(R.id.loadingPB_ParkingList) as ProgressBar
         setHasOptionsMenu(true);
 
+        Places.initialize(context,"AIzaSyCNdS-eHQeAsWyQ6xIEwROKmkgaA7zm6a4")
 
             recyclerView.layoutManager = layoutManager
         parkingModel = ParkingModel()
@@ -242,8 +247,13 @@ class ParkingsList_Fragment : Fragment(R.layout.fragment_parkings_list) {
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
-        var item: MenuItem = menu.getItem(0)
+        var item: MenuItem = menu.getItem(1)
         val searchView = item?.actionView as SearchView
+
+        val fieldList = Arrays.asList(Place.Field.ADDRESS,Place.Field.LAT_LNG,Place.Field.NAME)
+
+        val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY,fieldList)
+
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
@@ -270,8 +280,9 @@ class ParkingsList_Fragment : Fragment(R.layout.fragment_parkings_list) {
 
         })
 
-        item = menu.getItem(1)
+        item = menu.getItem(0)
         if (item != null) item.isVisible = false
     }
+
 
 }
