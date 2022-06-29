@@ -12,5 +12,6 @@ class DeconnexionFragment : Fragment(R.layout.fragment_deconnexion) {
         saveConnexion(requireContext(),false)
         val intent = Intent(requireContext(), SignActivity::class.java)
         startActivity(intent)
+        requireActivity().finish()
     }
 }

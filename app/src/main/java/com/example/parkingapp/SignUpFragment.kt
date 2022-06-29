@@ -102,6 +102,7 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
                         saveConnexion(requireContext(), true)
                         val intent = Intent(requireContext(), MainActivity::class.java)
                         startActivity(intent)
+                        requireActivity().finish()
                     }
 
                 } else {

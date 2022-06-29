@@ -2,6 +2,7 @@ package com.example.parkingapp
 
 import android.Manifest
 import android.app.AlertDialog
+import android.content.ClipData
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -12,14 +13,20 @@ import android.location.LocationManager
 import android.os.Bundle
 import android.os.SystemClock
 import android.provider.Settings
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
-import android.widget.ProgressBar
-import android.widget.Toast
+import android.widget.*
+import androidx.appcompat.view.menu.MenuView
+import androidx.appcompat.widget.SearchView
+import androidx.constraintlayout.motion.widget.OnSwipe
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.parkingapp.retrofit.Endpoint
 import com.example.parkingapp.viewmodel.HoraireModel
 import com.example.parkingapp.viewmodel.ParkingModel
@@ -34,11 +41,13 @@ import java.util.*
 
 class ParkingsList_Fragment : Fragment(R.layout.fragment_parkings_list) {
     lateinit var parkingModel: ParkingModel
+    lateinit var temp_parkingModel: ParkingModel
     private var loadingPB: ProgressBar? = null
     lateinit var adress: String
     lateinit var loc: Location
     var bool : Boolean = false
     lateinit var vm : HoraireModel
+    lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     lateinit var recyclerView: RecyclerView
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -47,14 +56,39 @@ class ParkingsList_Fragment : Fragment(R.layout.fragment_parkings_list) {
         recyclerView = view?.findViewById(R.id.recyclerView) as RecyclerView
         val layoutManager = LinearLayoutManager(context)
         loadingPB = view.findViewById(R.id.loadingPB_ParkingList) as ProgressBar
+        setHasOptionsMenu(true);
 
-        recyclerView.layoutManager = layoutManager
+
+            recyclerView.layoutManager = layoutManager
         parkingModel = ParkingModel()
+        temp_parkingModel = ParkingModel()
+        val vm_parking= ViewModelProvider(requireActivity()).get(ParkingModel::class.java)
+        parkingModel.data = vm_parking.data
 
-        statusCheck()
+
+        recyclerView.adapter = ParkingAdapter(requireActivity(), parkingModel.data,vm)
+
+        if(parkingModel.data.size == 0 ){
+            statusCheck()
+        }
+
+
+        refreshFragment(view)
 
         var adapter = ParkingAdapter(context,parkingModel.data,vm)
         recyclerView.adapter = adapter
+
+    }
+
+
+
+
+    private fun refreshFragment(view:View) {
+        swipeRefreshLayout = view.findViewById(R.id.swipe) as SwipeRefreshLayout
+        swipeRefreshLayout.setOnRefreshListener {
+            statusCheck()
+            swipeRefreshLayout.isRefreshing = false
+        }
     }
 
     fun loadData(){
@@ -83,6 +117,7 @@ class ParkingsList_Fragment : Fragment(R.layout.fragment_parkings_list) {
             withContext(Dispatchers.Main) {
                 if (response.isSuccessful && response.body() != null) {
                     parkingModel.data = response.body()!!.toMutableList()
+                    temp_parkingModel.data.addAll(parkingModel.data)
 
                     for(parking in parkingModel.data){
                         parking.etat = "Fermé"
@@ -125,6 +160,8 @@ class ParkingsList_Fragment : Fragment(R.layout.fragment_parkings_list) {
         }
         return jour
     }
+
+
 
     private fun getCurrentLocation(){
 
@@ -203,4 +240,38 @@ class ParkingsList_Fragment : Fragment(R.layout.fragment_parkings_list) {
         val alert: AlertDialog = builder.create()
         alert.show()
     }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        var item: MenuItem = menu.getItem(0)
+        val searchView = item?.actionView as SearchView
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                temp_parkingModel.data.clear()
+                val searchText = newText!!.toLowerCase(Locale.getDefault())
+                if (searchText.isNotEmpty()){
+                    parkingModel.data.forEach {
+                        if(it.nomParking.toLowerCase(Locale.getDefault()).contains(searchText)){
+                            temp_parkingModel.data.add(it)
+                        }
+                    }
+                    recyclerView.adapter = ParkingAdapter(requireActivity(), temp_parkingModel.data,vm)
+
+                }else{
+                    temp_parkingModel.data.clear()
+                    temp_parkingModel.data.addAll(parkingModel.data)
+                    recyclerView.adapter = ParkingAdapter(requireActivity(), temp_parkingModel.data,vm)
+                }
+                return false
+            }
+
+        })
+
+        item = menu.getItem(1)
+        if (item != null) item.isVisible = false
+    }
+
 }

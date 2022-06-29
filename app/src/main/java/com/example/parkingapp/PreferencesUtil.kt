@@ -5,6 +5,8 @@ import androidx.core.content.edit
 
 const val fileName = "sharedPrefs"
 
+
+
 fun saveConnexion(context: Context, connected:Boolean){
     val sharedPreferences = context.getSharedPreferences(fileName, Context.MODE_PRIVATE)
     val editor = sharedPreferences.edit()
