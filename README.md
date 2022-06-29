@@ -1,2 +1,2 @@
 # example-of-kotlin-app
-Project skeleton + Parking &amp; SignUp functions
+An example of kotlin app for reserving parking places
