@@ -1,6 +1,8 @@
 package com.example.parkingapp
 
+import ReservationDialog
 import android.annotation.SuppressLint
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -20,6 +22,7 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.menuapplication.loadConnexion
 import com.example.parkingapp.data_class.Horaire
 import com.example.parkingapp.retrofit.Endpoint
 import com.example.parkingapp.viewmodel.HoraireModel
@@ -27,6 +30,8 @@ import com.example.parkingapp.viewmodel.ParkingModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ParkingFragment_Info : Fragment(R.layout.fragment_parking_info) {
     private val args: ParkingFragment_InfoArgs by navArgs()
@@ -40,6 +45,8 @@ class ParkingFragment_Info : Fragment(R.layout.fragment_parking_info) {
         super.onViewCreated(view, savedInstanceState)
 
         val vm= ViewModelProvider(requireActivity()).get(HoraireModel::class.java)
+
+        var cal = Calendar.getInstance()
 
         recyclerView = view?.findViewById(R.id.recyclerView_Horaire) as RecyclerView
         val layoutManager = LinearLayoutManager(context)
@@ -64,6 +71,7 @@ class ParkingFragment_Info : Fragment(R.layout.fragment_parking_info) {
         val temps = view.findViewById(R.id.temps) as TextView
         val tarif_heure = view.findViewById(R.id.tarif_heure) as TextView
         val voiture = view.findViewById(R.id.voiture) as ImageView
+        val reservationButton = view.findViewById(R.id.reserver_button) as Button
 
 
 
@@ -89,6 +97,23 @@ class ParkingFragment_Info : Fragment(R.layout.fragment_parking_info) {
             mapIntent.setPackage("com.google.android.apps.maps")
             startActivity(mapIntent)
         }
+
+
+        // when you click on the button, show DatePickerDialog that is set with OnDateSetListener
+        var bundle: Bundle = Bundle()
+        bundle.putInt("idParking", args.idParking)
+
+        var sharedPreferences = loadConnexion(requireActivity())
+        bundle.putInt("idCompte", sharedPreferences.getString("idCompte", "")?.toInt()!!)
+
+        reservationButton.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(view: View) {
+                val reservationDialog: ReservationDialog = ReservationDialog()
+                reservationDialog.arguments = bundle
+                reservationDialog.show(childFragmentManager, ReservationDialog.TAG)
+            }
+
+        })
     }
 
     private fun tri_Days(){

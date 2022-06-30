@@ -61,10 +61,10 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
                         // Verify password
                         if (data.motDePasse == pwd) {
                             val duration = Toast.LENGTH_SHORT
-                            val toast = Toast.makeText(context, "Vous êtes connecté", duration)
+                            val toast = Toast.makeText(context, "Vous êtes connecté" + data.idCompte.toString(), duration)
                             toast.show()
 
-                            saveConnexion(requireContext(), true, data.nom, data.prenom, data.email, data.numTelephone, data.numCompte)
+                            saveConnexion(requireContext(), true, data.nom, data.prenom, data.email, data.numTelephone, data.numCompte, data.idCompte.toString())
                             val intent = Intent(requireContext(), MainActivity::class.java)
                             startActivity(intent)
                             requireActivity().finish()
@@ -110,7 +110,7 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
             val account: GoogleSignInAccount = task.getResult(ApiException::class.java)
 
             // Signed in successfully, show authenticated UI.
-            saveConnexion(requireContext(), true, account.familyName, account.givenName, account.email, "", "")
+            saveConnexion(requireContext(), true, account.familyName, account.givenName, account.email, "", "", account.id)
             val intent = Intent(requireContext(), MainActivity::class.java)
             startActivity(intent)
             requireActivity().finish()
