@@ -86,7 +86,7 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
             val response = Endpoint.createEndpoint().createAccount(modal)
             withContext(Dispatchers.Main) {
                 loadingPB!!.visibility = View.INVISIBLE
-                if (response.isSuccessful && response.body() != null) {
+                if (response.isSuccessful) {
                     if (response.body()== null) {
                         Toast.makeText(
                             requireContext(),
@@ -99,7 +99,7 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
                             "Compte créé",
                             Toast.LENGTH_SHORT
                         ).show()
-                        saveConnexion(requireContext(), true)
+                        saveConnexion(requireContext(), true, response.body()!!.nom,response.body()!!.prenom,response.body()!!.email,response.body()!!.numTelephone,response.body()!!.numCompte)
                         val intent = Intent(requireContext(), MainActivity::class.java)
                         startActivity(intent)
                         requireActivity().finish()

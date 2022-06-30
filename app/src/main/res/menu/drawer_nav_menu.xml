@@ -2,14 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/reservationsFragment"
-        android:icon="@drawable/ic_launcher_foreground"
+        android:icon="@drawable/ic_baseline_widgets_24"
         android:title="Mes résevations"/>
     <item
         android:id="@+id/compteFragment"
-        android:icon="@drawable/ic_launcher_foreground"
+        android:icon="@drawable/ic_baseline_account_circle_24"
         android:title="Mon compte"/>
     <item
         android:id="@+id/deconnexionFragment"
-        android:icon="@drawable/ic_launcher_foreground"
+        android:icon="@drawable/ic_baseline_arrow_back_24"
         android:title="Déconnexion"/>
 </menu>

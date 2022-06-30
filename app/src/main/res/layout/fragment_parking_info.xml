@@ -101,6 +101,27 @@
         app:layout_constraintTop_toBottomOf="@+id/image"
         app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Rounded" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/rateButton"
+        style="@style/Widget.MaterialComponents.Button.Icon"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:insetLeft="0dp"
+        android:insetTop="0dp"
+        android:insetRight="0dp"
+        android:insetBottom="0dp"
+        android:theme="@style/Theme.MaterialComponents.Light"
+        app:backgroundTint="#F44C4C"
+        app:icon="@drawable/ic_baseline_star_rate_24"
+        app:iconPadding="0dp"
+        app:iconSize="24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/image"
+        app:layout_constraintRight_toLeftOf="@+id/mapButton"
+        app:layout_constraintTop_toBottomOf="@+id/image"
+        app:layout_constraintVertical_bias="0.416"
+        android:layout_marginRight="10dp"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Rounded" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout_detail"
         android:layout_width="match_parent"

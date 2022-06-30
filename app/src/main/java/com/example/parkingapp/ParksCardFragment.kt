@@ -192,7 +192,11 @@ class ParksCardFragment : Fragment(R.layout.fragment_card), OnMapReadyCallback{
         //val meter: Float = loc.distanceTo(loc_parking)
         val kms = (meter / 1000).toDouble()
 
-        val kms_per_min = 0.5
+        var kms_per_min = 0.0
+
+        if(kms<50){kms_per_min = 0.5}
+        else if(kms>=50 && kms <100){kms_per_min = 1.67}
+        else{kms_per_min = 1.9}
 
         val mins_taken = kms / kms_per_min
 
@@ -204,7 +208,7 @@ class ParksCardFragment : Fragment(R.layout.fragment_card), OnMapReadyCallback{
         } else {
             var minutes = Integer.toString(totalMinutes % 60)
             minutes = if (minutes.length == 1) "0$minutes" else minutes
-            (totalMinutes / 60).toString() + " hour " + minutes + "min"
+            (totalMinutes / 60).toString() + " heure " + minutes + " min"
         }
         parking.distance = kms.toString().subSequence(0,5).toString() + " Km - "
         parking.temps = temp
@@ -239,8 +243,8 @@ class ParksCardFragment : Fragment(R.layout.fragment_card), OnMapReadyCallback{
     override fun onPrepareOptionsMenu(menu: Menu) {
         var item: MenuItem = menu.getItem(1)
         if (item != null) item.isVisible = false
-        item = menu.getItem(0)
-        if (item != null) item.isVisible = true
+        item = menu.getItem(2)
+        if (item != null) item.isVisible = false
 
 
     }
