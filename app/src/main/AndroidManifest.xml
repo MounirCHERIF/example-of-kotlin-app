@@ -8,9 +8,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/parkingo__logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/parkingo__logo_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ParkingApp"
         android:usesCleartextTraffic="true"

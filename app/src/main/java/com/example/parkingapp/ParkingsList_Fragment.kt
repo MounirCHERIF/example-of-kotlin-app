@@ -18,25 +18,36 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.menu.MenuView
 import androidx.appcompat.widget.SearchView
 import androidx.constraintlayout.motion.widget.OnSwipe
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.navArgs
+import androidx.navigation.ui.onNavDestinationSelected
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.parkingapp.retrofit.Endpoint
+import com.example.parkingapp.viewmodel.AdvancedSearchModel
 import com.example.parkingapp.viewmodel.HoraireModel
 import com.example.parkingapp.viewmodel.ParkingModel
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.widget.Autocomplete
+import com.google.android.libraries.places.widget.AutocompleteActivity
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.maps.android.SphericalUtil
 import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 
 class ParkingsList_Fragment : Fragment(R.layout.fragment_parkings_list) {
@@ -48,6 +59,10 @@ class ParkingsList_Fragment : Fragment(R.layout.fragment_parkings_list) {
     var bool : Boolean = false
     lateinit var vm : HoraireModel
     lateinit var swipeRefreshLayout: SwipeRefreshLayout
+    lateinit var vm_Search:AdvancedSearchModel
+
+
+    var advancedSearch = false
 
     lateinit var recyclerView: RecyclerView
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -58,6 +73,20 @@ class ParkingsList_Fragment : Fragment(R.layout.fragment_parkings_list) {
         loadingPB = view.findViewById(R.id.loadingPB_ParkingList) as ProgressBar
         setHasOptionsMenu(true);
 
+
+
+
+
+
+        Places.initialize(context,"AIzaSyCNdS-eHQeAsWyQ6xIEwROKmkgaA7zm6a4")
+
+        vm_Search= ViewModelProvider(requireActivity()).get(AdvancedSearchModel::class.java)
+        if(vm_Search.prix!="" && vm_Search.distance!=""){
+            advancedSearch = true
+            val fieldList = Arrays.asList(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME)
+            val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY,fieldList).build(context)
+            startActivityForResult(intent,100)
+        }
 
             recyclerView.layoutManager = layoutManager
         parkingModel = ParkingModel()
@@ -197,7 +226,11 @@ class ParkingsList_Fragment : Fragment(R.layout.fragment_parkings_list) {
         //val meter: Float = loc.distanceTo(loc_parking)
         val kms = (meter / 1000).toDouble()
 
-        val kms_per_min = 0.5
+        var kms_per_min = 0.0
+
+        if(kms<50){kms_per_min = 0.5}
+        else if(kms>=50 && kms <100){kms_per_min = 1.67}
+        else{kms_per_min = 2.0}
 
         val mins_taken = kms / kms_per_min
 
@@ -209,7 +242,7 @@ class ParkingsList_Fragment : Fragment(R.layout.fragment_parkings_list) {
         } else {
             var minutes = Integer.toString(totalMinutes % 60)
             minutes = if (minutes.length == 1) "0$minutes" else minutes
-            (totalMinutes / 60).toString() + " hour " + minutes + "min"
+            (totalMinutes / 60).toString() + " heure " + minutes + " min"
         }
         parking.distance = kms.toString().subSequence(0,5).toString() + " Km - "
         parking.temps = temp
@@ -242,36 +275,65 @@ class ParkingsList_Fragment : Fragment(R.layout.fragment_parkings_list) {
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
-        var item: MenuItem = menu.getItem(0)
-        val searchView = item?.actionView as SearchView
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
-            }
+        var item = menu.getItem(0)
+        if (item != null) item.isVisible = false
+    }
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                temp_parkingModel.data.clear()
-                val searchText = newText!!.toLowerCase(Locale.getDefault())
-                if (searchText.isNotEmpty()){
-                    parkingModel.data.forEach {
-                        if(it.nomParking.toLowerCase(Locale.getDefault()).contains(searchText)){
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(item.itemId == R.id.search_action){
+            advancedSearch = false
+            val fieldList = Arrays.asList(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME)
+            val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY,fieldList).build(context)
+            startActivityForResult(intent,100)
+        }else if(item.itemId == R.id.btn_advancedSearch){
+            val action = ParkingsList_FragmentDirections.actionParkingsListFragmentToDialogSearchFragment2()
+
+            requireView().findNavController().navigate(action)
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
+
+    @Override
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == 100 && resultCode == AppCompatActivity.RESULT_OK){
+            val place = Autocomplete.getPlaceFromIntent(data)
+
+            temp_parkingModel.data.clear()
+
+            val LatLng = place.latLng
+            var LatLng_Park = LatLng(0.0,0.0)
+            if (place.name.isNotEmpty()){
+                parkingModel.data.forEach {
+                    LatLng_Park = LatLng(it.latitude.toDouble(),it.longitude.toDouble())
+                    if(advancedSearch == true){
+                        if(SphericalUtil.computeDistanceBetween(LatLng, LatLng_Park)<=vm_Search.distance.toInt() * 1000 && it.tarifHeure<=vm_Search.prix.toInt()){
+                            temp_parkingModel.data.add(it)
+                        }
+                        advancedSearch = false
+                    }else{
+                        if(SphericalUtil.computeDistanceBetween(LatLng, LatLng_Park)<10000){
                             temp_parkingModel.data.add(it)
                         }
                     }
-                    recyclerView.adapter = ParkingAdapter(requireActivity(), temp_parkingModel.data,vm)
-
-                }else{
-                    temp_parkingModel.data.clear()
-                    temp_parkingModel.data.addAll(parkingModel.data)
-                    recyclerView.adapter = ParkingAdapter(requireActivity(), temp_parkingModel.data,vm)
                 }
-                return false
+                recyclerView.adapter = ParkingAdapter(requireActivity(), temp_parkingModel.data,vm)
+
+            }else{
+                temp_parkingModel.data.clear()
+                temp_parkingModel.data.addAll(parkingModel.data)
+                recyclerView.adapter = ParkingAdapter(requireActivity(), temp_parkingModel.data,vm)
             }
 
-        })
+        }else if (resultCode == AutocompleteActivity.RESULT_ERROR){
+            val status = Autocomplete.getStatusFromIntent(data)
+            Toast.makeText(context,status.statusMessage, Toast.LENGTH_SHORT).show()
 
-        item = menu.getItem(1)
-        if (item != null) item.isVisible = false
+        }
+        vm_Search.prix = ""
+        vm_Search.distance = ""
     }
 
 }

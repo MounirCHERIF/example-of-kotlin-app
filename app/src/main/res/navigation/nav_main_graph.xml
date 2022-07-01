@@ -13,6 +13,10 @@
         <action
             android:id="@+id/action_parkingsList_Fragment_to_parkingFragment_Info"
             app:destination="@id/parkingFragment_Info" />
+        <action
+            android:id="@+id/action_parkingsList_Fragment_to_dialogSearchFragment2"
+            app:destination="@id/dialogSearchFragment2"
+            app:launchSingleTop="false" />
     </fragment>
     <fragment
         android:id="@+id/parkingFragment_Info"
@@ -49,6 +53,9 @@
         <argument
             android:name="temps"
             app:argType="string" />
+        <action
+            android:id="@+id/action_parkingFragment_Info_to_dialogRateFragment"
+            app:destination="@id/dialogRateFragment" />
     </fragment>
     <fragment
         android:id="@+id/parksCardFragment"
@@ -69,4 +76,20 @@
         android:id="@+id/deconnexionFragment"
         android:name="com.example.parkingapp.DeconnexionFragment"
         tools:layout="@layout/fragment_deconnexion" />
+    <dialog
+        android:id="@+id/dialogSearchFragment2"
+        android:name="com.example.parkingapp.DialogSearchFragment"
+        android:label="fragment_dialog_search"
+        tools:layout="@layout/fragment_dialog_search" >
+        <action
+            android:id="@+id/action_dialogSearchFragment2_to_parkingsList_Fragment"
+            app:destination="@id/parkingsList_Fragment"
+            app:popUpTo="@id/parkingsList_Fragment"
+            app:popUpToInclusive="true" />
+    </dialog>
+    <dialog
+        android:id="@+id/dialogRateFragment"
+        android:name="com.example.parkingapp.DialogRateFragment"
+        android:label="fragment_dialog_rate"
+        tools:layout="@layout/fragment_dialog_rate" />
 </navigation>

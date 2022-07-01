@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -40,12 +41,14 @@ class ParkingFragment_Info : Fragment(R.layout.fragment_parking_info) {
     lateinit var horaireModel: HoraireModel
 
 
+
     @SuppressLint("ResourceType")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val vm= ViewModelProvider(requireActivity()).get(HoraireModel::class.java)
 
+        setHasOptionsMenu(true);
         var cal = Calendar.getInstance()
 
         recyclerView = view?.findViewById(R.id.recyclerView_Horaire) as RecyclerView
@@ -60,6 +63,11 @@ class ParkingFragment_Info : Fragment(R.layout.fragment_parking_info) {
 
         var adapter = HoraireAdapter(context, horaireModel.data)
         recyclerView.adapter = adapter
+
+        view.findViewById<Button>(R.id.rateButton).setOnClickListener {
+            val action = ParkingFragment_InfoDirections.actionParkingFragmentInfoToDialogRateFragment()
+            requireView().findNavController().navigate(action)
+        }
 
 
         val image = view.findViewById(R.id.image) as ImageView
@@ -140,6 +148,14 @@ class ParkingFragment_Info : Fragment(R.layout.fragment_parking_info) {
                 }
             }
         }
+    }
+
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        var item = menu.getItem(0)
+        if (item != null) item.isVisible = false
+        item = menu.getItem(1)
+        if (item != null) item.isVisible = false
     }
 
 }

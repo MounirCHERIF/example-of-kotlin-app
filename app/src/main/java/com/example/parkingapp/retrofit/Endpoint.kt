@@ -31,6 +31,7 @@ interface Endpoint {
     @DELETE("/compte/{id}")
     suspend fun deleteCompte(@Path("id") id: String): Response<compte>
 
+
     @GET("/reservation")
     suspend fun getReservations(): Response<List<Reservation>>
 

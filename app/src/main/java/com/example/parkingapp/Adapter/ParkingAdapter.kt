@@ -69,6 +69,7 @@ class ParkingAdapter(val context: Context?, var data: List<Parking>,var vm:Horai
                 val adresse = parking.adresseParking.toString()
                 val taux = view.findViewById<TextView>(R.id.taux).text.toString()
                 val etat = parking.etat
+                vm.data.clear()
                 vm.data.addAll(parking.Horaire)
 
                 val action =

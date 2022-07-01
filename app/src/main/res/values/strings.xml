@@ -1,4 +1,9 @@
 <resources>
+<<<<<<< HEAD
+    <string name="app_name">PARKINGO</string>
+    <string name="inscrivez"><u>Inscrivez-vous</u></string>
+    <string name="connectez"><u>Connectez-vous</u></string>
+=======
     <string name="app_name">Parking app</string>
     <string name="inscrivez">
         <u>Inscrivez-vous</u>
@@ -19,4 +24,5 @@
     <string name="attachment_title">Download incoming attachments</string>
     <string name="attachment_summary_on">Automatically download attachments for incoming emails</string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
+>>>>>>> 0ce667afe51a10ff224998cc93a97efd22e9d4e1
 </resources>

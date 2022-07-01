@@ -3,20 +3,29 @@ package com.example.parkingapp
 import android.annotation.SuppressLint
 import android.content.ClipData
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import android.widget.Toolbar
 import androidx.appcompat.view.menu.MenuView
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.*
 import com.example.menuapplication.loadConnexion
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.widget.Autocomplete
+import com.google.android.libraries.places.widget.AutocompleteActivity
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -45,6 +54,8 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(findViewById(R.id.main_toolbar))
         setupActionBarWithNavController(navController,appBarConfiguration)
+        val toolbar = findViewById(R.id.main_toolbar) as androidx.appcompat.widget.Toolbar
+        toolbar.setBackgroundColor(Color.parseColor("#FF3700B3"))
 
         findViewById<BottomNavigationView>(R.id.bottom_nav).setupWithNavController(navController)
         findViewById<NavigationView>(R.id.nav_view).setupWithNavController(navController)

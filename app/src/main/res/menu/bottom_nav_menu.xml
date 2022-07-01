@@ -2,10 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/parksCardFragment"
-        android:icon="@drawable/ic_launcher_foreground"
+        android:icon="@drawable/ic_baseline_map_24"
         android:title="Carte"/>
     <item
         android:id="@+id/parkingsList_Fragment"
-        android:icon="@drawable/ic_launcher_foreground"
+        android:icon="@drawable/ic_baseline_local_parking_24"
         android:title="Parkings"/>
 </menu>

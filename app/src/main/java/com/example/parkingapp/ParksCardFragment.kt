@@ -17,24 +17,21 @@ import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
-import androidx.databinding.DataBindingUtil.setContentView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
-import com.example.parkingapp.databinding.FragmentCardBinding
 import com.example.parkingapp.retrofit.Endpoint
 import com.example.parkingapp.viewmodel.ParkingModel
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.maps.android.SphericalUtil
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.callbackFlow
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -62,12 +59,6 @@ class ParksCardFragment : Fragment(R.layout.fragment_card), OnMapReadyCallback{
         loadingPB = view.findViewById(R.id.loadingPB_ParkingCard) as ProgressBar
         setHasOptionsMenu(true);
 
-
-        val btn = view.findViewById<View>(R.id.refresh) as Button
-
-        btn!!.setOnClickListener {
-                statusCheck()
-        }
 
 
         supportMapFragment.getMapAsync(this)
@@ -201,7 +192,11 @@ class ParksCardFragment : Fragment(R.layout.fragment_card), OnMapReadyCallback{
         //val meter: Float = loc.distanceTo(loc_parking)
         val kms = (meter / 1000).toDouble()
 
-        val kms_per_min = 0.5
+        var kms_per_min = 0.0
+
+        if(kms<50){kms_per_min = 0.5}
+        else if(kms>=50 && kms <100){kms_per_min = 1.67}
+        else{kms_per_min = 1.9}
 
         val mins_taken = kms / kms_per_min
 
@@ -213,7 +208,7 @@ class ParksCardFragment : Fragment(R.layout.fragment_card), OnMapReadyCallback{
         } else {
             var minutes = Integer.toString(totalMinutes % 60)
             minutes = if (minutes.length == 1) "0$minutes" else minutes
-            (totalMinutes / 60).toString() + " hour " + minutes + "min"
+            (totalMinutes / 60).toString() + " heure " + minutes + " min"
         }
         parking.distance = kms.toString().subSequence(0,5).toString() + " Km - "
         parking.temps = temp
@@ -246,10 +241,21 @@ class ParksCardFragment : Fragment(R.layout.fragment_card), OnMapReadyCallback{
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
-        var item: MenuItem = menu.getItem(0)
+        var item: MenuItem = menu.getItem(1)
         if (item != null) item.isVisible = false
-        item = menu.getItem(1)
-        if (item != null) item.isVisible = true
+        item = menu.getItem(2)
+        if (item != null) item.isVisible = false
 
+
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.refresh_action -> {
+                statusCheck()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
