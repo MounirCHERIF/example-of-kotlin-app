@@ -12,7 +12,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/parkingo__logo_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.ParkingApp">
+        android:theme="@style/Theme.ParkingApp"
+        android:usesCleartextTraffic="true"
+    >
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCNdS-eHQeAsWyQ6xIEwROKmkgaA7zm6a4" />

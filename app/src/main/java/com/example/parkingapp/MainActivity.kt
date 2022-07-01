@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
 
     @SuppressLint("ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
-        if (!loadConnexion(this)) {
+        if (!(loadConnexion(this).getBoolean("Connected", false))) {
             val intent = Intent(this@MainActivity, SignActivity::class.java)
             startActivity(intent)
             finish()
