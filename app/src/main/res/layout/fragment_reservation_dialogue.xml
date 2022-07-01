@@ -4,14 +4,15 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_gravity="center"
-              android:orientation="vertical">
+              android:orientation="vertical"
+                android:minHeight="300dp">
 
     <TextView
             android:id="@+id/show_selected_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="128dp"
+            android:layout_marginTop="10dp"
             android:text="Date de départ est : "
             android:textSize="18sp" />
 
@@ -30,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="128dp"
+            android:layout_marginTop="30dp"
             android:text="Date d'arrivée est : "
             android:textSize="18sp" />
 

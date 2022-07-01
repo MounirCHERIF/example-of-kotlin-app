@@ -1,7 +1,8 @@
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.graphics.Bitmap
+import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.DatePicker
@@ -11,10 +12,12 @@ import androidx.fragment.app.DialogFragment
 import com.example.parkingapp.R
 import com.example.parkingapp.data_class.Reservation
 import com.example.parkingapp.retrofit.Endpoint
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.EncodeHintType
+import com.google.zxing.qrcode.QRCodeWriter
 import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.math.log
 
 
 class ReservationDialog : DialogFragment(R.layout.fragment_reservation_dialogue) {
@@ -188,6 +191,20 @@ class ReservationDialog : DialogFragment(R.layout.fragment_reservation_dialogue)
         val myFormat = "MM/dd/yyyy 'à' hh:mm" 
         val sdf = SimpleDateFormat(myFormat, Locale.US)
         selectedDate!!.text = sdf.format(date.getTime())
+    }
+
+    fun getQrCodeBitmap(s: String): Bitmap {
+        val size = 512 //pixels
+        val qrCodeContent = s
+        val hints = hashMapOf<EncodeHintType, Int>().also { it[EncodeHintType.MARGIN] = 1 } // Make the QR code buffer border narrower
+        val bits = QRCodeWriter().encode(qrCodeContent, BarcodeFormat.QR_CODE, size, size)
+        return Bitmap.createBitmap(size, size, Bitmap.Config.RGB_565).also {
+            for (x in 0 until size) {
+                for (y in 0 until size) {
+                    it.setPixel(x, y, if (bits[x, y]) Color.BLACK else Color.WHITE)
+                }
+            }
+        }
     }
 
     companion object {
